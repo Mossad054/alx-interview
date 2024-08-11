@@ -7,9 +7,6 @@ def pascal_triangle(n):
         return []
     
     triangle = [[1]]
-   """
-   funtion to check row numbers
-   """
 
     for i in range(1, n):
         prev_row = triangle[-1]
