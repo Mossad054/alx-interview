@@ -128,10 +128,8 @@ def get_solutions():
     build_solution(0, group)
 
 
-
 n = get_input()
 get_solutions()
-
 
 for solution in solutions:
     print(solution)
