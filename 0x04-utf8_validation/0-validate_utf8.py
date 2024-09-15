@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""UTF-8 validation module."""
+"""UTF-8 validation module.
+"""
+
 
 def validUTF8(data):
     """Checks if a list of integers are valid UTF-8 codepoints."""
@@ -38,10 +40,10 @@ def validUTF8(data):
             return False
 
         # Validate continuation bytes
-        if n - i < span or not all(data[j] & 0b11000000 == 0b10000000 for j in range(i + 1, i + span)):
+        if (n - i < span or 
+            not all(data[j] & 0b11000000 == 0b10000000 for j in range(i + 1, i + span))):
             return False
 
         skip = span - 1
 
     return True
-
