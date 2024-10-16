@@ -1,28 +1,31 @@
 #!/usr/bin/python3
-"""Prime game module.
-"""
-
+"""Prime game module."""
 
 def isWinner(x, nums):
-    """Determines the winner of a prime game session with `x` rounds.
-    """
+    """Determines the winner of a prime game session with `x` rounds."""
     if x < 1 or not nums:
         return None
-    marias_wins, bens_wins = 0, 0
-    # generate primes with a limit of the maximum number in nums
-    n = max(nums)
-    primes = [True for _ in range(1, n + 1, 1)]
-    primes[0] = False
-    for i, is_prime in enumerate(primes, 1):
-        if i == 1 or not is_prime:
-            continue
-        for j in range(i + i, n + 1, i):
-            primes[j - 1] = False
-    # filter the number of primes less than n in nums for each round
-    for _, n in zip(range(x), nums):
-        primes_count = len(list(filter(lambda x: x, primes[0: n])))
-        bens_wins += primes_count % 2 == 0
-        marias_wins += primes_count % 2 == 1
-    if marias_wins == bens_wins:
+
+    max_num = max(nums)
+    primes = generate_prime_sieve(max_num)
+    
+    maria_wins = sum(1 for n in nums if count_primes(primes, n) % 2 == 1)
+    ben_wins = x - maria_wins
+
+    if maria_wins == ben_wins:
         return None
-    return 'Maria' if marias_wins > bens_wins else 'Ben'
+    return 'Maria' if maria_wins > ben_wins else 'Ben'
+
+def generate_prime_sieve(n):
+    """Generate a prime sieve up to n."""
+    sieve = [True] * (n + 1)
+    sieve[0] = sieve[1] = False
+    for i in range(2, int(n**0.5) + 1):
+        if sieve[i]:
+            for j in range(i*i, n + 1, i):
+                sieve[j] = False
+    return sieve
+
+def count_primes(sieve, n):
+    """Count the number of primes less than or equal to n."""
+    return sum(sieve[:n+1])
